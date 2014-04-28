@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="ui-mobile-rendering">
+<head>
+<meta charset="utf-8">
+<title>Lipsti</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<link href="css/ratchet.css" rel="stylesheet">
+<link href="css/vine.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/icons.css" rel="stylesheet">
+<link href="css/snap.css" rel="stylesheet">
+<link href="css/login.css" rel="stylesheet">
+<link href="css/infinite.css" rel="stylesheet">
+<link href="css/addArticle.css" rel="stylesheet">
+<link href="css/tablette.css" rel="stylesheet">
+<link href="css/libs/crop.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="content">
+    <div class="content">
+        <div id="scroller"></div><div id="loader-article"></div>
+    </div>
+</div>
+
+<!-- # panel -->
+<script type="text/javascript" src="js/mobile/libs/head.js"></script>
+<script type="text/javascript" src="js/mobile/includes.js"></script>
+
+<!-- template to display the list of the articles -->
+<script type="text/template" id="infiniteArticle">
+<ul>
+<%  articles.each(function (article) {  %>
+<li>
+<article class="format-standard">
+    <div class="wrapped-content">
+        <p class="title"><span class="category"><%= article.get('category') %></span> <span class="time"><%= article.get('date') %></span></p>
+        <h2><a href="blog-single-standard.html"><%= article.get('name') %></a></h2>
+        </div>
+        <figure>
+        <img  src="<%= article.get('imageUrl') %>" alt="">
+        </figure>
+</article>
+</li>
+<% }); %>
+</ul>
+</script>
+<!-- end of template -->
+
+<!-- template to display the login Form -->
+<script type="text/template" id="loginForm">
+<div class="loginForm">
+    <input type="text" id='username' class="zocial-dribbble" placeholder="Pseudo" />
+    <input type="password" id='password' class="zocial-dribbble" placeholder="Mot de passe" />
+    <input type="submit" id="valider-login" value="Se connecter" />
+    <input type="submit" id="login-facebook" class="facebook-connect" value="Facebook" />
+    <a id="lost-password" href="#">Mot de passe perdu ?</a>
+</div> 
+</script>
+<!-- end template -->
+
+<!-- template for the menu -->
+<script type="text/template" id="menuTemplate">
+<ul class="list">
+    <li><a class="icon icon-home" id="accueil">Accueil </a></li>
+    <li><a class="icon icon-plus" id="add-article">Ajouter un article </a></li>
+    <li class="icon list-divider"></li>
+    <% if(logged == false) { %> 
+    <li><a class="icon icon-enter" id="login">Se connecter</a></li>
+    <% } else { %>  
+    <li><a class="icon icon-enter" id="logout">Se deconnecter</a></li>
+    <% } %>
+</ul>
+</script>
+<!-- end template -->
+
+<!-- template profile image -->
+<script type="text/template" id="profileTemplate">
+<div class="container-image-profile">
+    <div class="dummy"><%= username %></div>
+        <div class="snap-left-login-profile" style="background-image:url(<%= avatar %>)">
+    </div>
+</div>
+</script>
+<!-- end template -->
+
+<!-- template add article -->
+<script type="text/template" id="addArticleTemplate">
+<% console.log(cat, size) %>
+<div class="container-add-article">
+    <div class="row">
+        <input id="marque" type="text" placeholder="Marque" value="" />
+    </div>
+    <div class="row">
+        <div class="pad-right col-xm-6 col-xs-6">
+            <input id="marque" type="text" placeholder="Prix" value="" />
+        </div>
+        <div id="prefetch-city" class="col-xm-6 col-xs-6">
+            <input id="city" type="text" placeholder="Code Postal" value="" />
+            <input type="hidden" id="cpInput" name="cpInput" />
+        </div>
+    </div>
+    <div class="row">
+        <textarea name="description" placeholder="Description de l'article"></textarea>
+    </div>
+    <div class="container-add-photos">
+        <div class="row">
+            <div class="pad-right col-xm-6 col-xs-6">
+                <button class="button addPhoto" id="b-photo-1" data-photo-id="1">Photo 1</button>
+                <input type="hidden" id="photo-1" name="photo-1" />
+            </div>
+            <div class="col-xm-6 col-xs-6">
+                <button class="button addPhoto" id="b-photo-2" data-photo-id="2">Photo 2</button>
+                <input type="hidden" id="photo-2" name="photo-2" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="pad-right col-xm-6 col-xs-6">
+                <button class="button addPhoto" id="b-photo-3" data-photo-id="3">Photo 3</button>
+                <input type="hidden" id="photo-3" name="photo-3" />
+            </div>
+            <div class="col-xm-6 col-xs-6">
+                <button class="button addPhoto" id="b-photo-4" data-photo-id="4" >Photo 4</button>
+                <input type="hidden" id="photo-4" name="photo-4" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="pad-right col-xm-4 col-xs-4">
+            <span class="custom-dropdown big">
+                <select>    
+                    <option>Type</option>
+                    <option>The Great Gatsby</option>  
+                </select>
+            </span>
+        </div>
+        <div class="pad-right col-xm-4 col-xs-4">
+            <span class="custom-dropdown big">
+                <select>    
+                    <option>Pour</option>
+                    <option>Femmes</option>
+                    <option>Hommes</option>  
+                </select>
+            </span>
+        </div>
+        <div class="col-xm-4 col-xs-4">
+            <span class="custom-dropdown big">
+                <select>    
+                    <option>Taille</option>
+                    <option>The Great Gatsby</option>  
+                </select>
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <input id="tags" type="text" placeholder="Tags" class="tags" value="" />
+    </div>
+    <div class="row">
+        <input id='check-1' type="checkbox" name='check-1' checked='checked' />
+        <label for="check-1">J'accepte les conditions générales</label>
+        <input id='check-2' type="checkbox" name='check-1' />
+        <label for="check-2">Partager sur Facebook</label>        
+    </div>
+    <div class="row">
+        <input type="submit" id="valider-login" value="Se connecter">
+    </div>
+</div>
+</script>
+<!-- end template add article -->
+
+<!-- template for image cropping -->
+<script type="text/template" id="cropImage">
+    <div class="cropMain"></div>
+    <div class="cropSlider"></div>
+    <input type="submit" id="validerCrop" style="margin-bottom: 15px;" value="Valider">
+    <input type="submit" id="annulerCrop" class="button-annuler" value="Annuler">
+</script>
+<!-- end template image cropping -->
+<script src="http://192.168.1.12:8080/target/target-script-min.js#anonymous"></script>
+
+</body>
+</html>
