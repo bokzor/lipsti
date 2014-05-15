@@ -1,17 +1,17 @@
 @media all and (min-width: 600px) {
   /* le slide droit est visible. */
   #right-drawer{
-    width: 40%;
+    width: 0%;
     z-index: 11;
      /* on desactive donc l'effet scale */
-    -webkit-transform: scale(1,1);
+    -webkit-transform: scale(1,1) translate3d(0,0,0);
     opacity: 1;
   }
   .popover{
     left: 30%;
   }
   #content{
-    width: 60%;
+    width: 100%;
   }
 
   #toggle-right{
@@ -32,30 +32,28 @@
     width: 30%;
     z-index: 11;
      /* on desactive donc l'effet scale */
-    -webkit-transform: scale(1,1);
+    -webkit-transform: scale(1,1) translate3d(0,0,0);
     opacity: 1;
   }
-  .popover{
-    left: 50%;
-  }
 
+  #scroller li{
+    width: 50%;
+    float: left;
+  }
 
   #left-drawer{
-    width: 25%;
-    z-index: 11;
-     /* on desactive donc l'effet scale */
-    -webkit-transform: scale(1,1);
-    opacity: 1;
+    width: 265px;
+
   }
   #content{
-    width: 45%;
-    margin-left: 25%;    
+    width: 70%;
+    margin-left: 0%;    
   }
   .snap-drawers{
     top: 0px;
   }
   #toggle-left{
-    display: none;
+
   }
   #toggle-right{
     display: none;
@@ -63,11 +61,16 @@
 }
 
 /* on ajuste la taille de la zone centrale pour la page de login */
-#content.login {
-  width: 100%;
-  margin: 0;
-}
-
 .snap-drawer-left li{
   padding-left: 15px;
 }
+
+.ios7{
+  padding-top: 20px;
+}
+
+.ios7 .snap-drawers{
+  margin-top: 20px;
+}
+
+

@@ -73,3 +73,6 @@
 .icon-plus:before {
     content: "\e60e";
 }
+.icon-filter:before {
+    content: "\e60f";
+}

@@ -1,12 +1,17 @@
 .content{
   overflow: none;
 }
+#scroller li{
+  list-style: none;
+}
+
 #scroller {
   position: absolute;
   z-index: 1;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   width: 100%;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -19,6 +24,13 @@
   text-size-adjust: none;
   overflow: auto;
   height: 100%;
+  -webkit-transition-property: top, bottom;
+  transition-property: top, bottom;
+  -webkit-transition-duration: .2s, .2s;
+  transition-duration: .2s, .2s;
+  -webkit-transition-timing-function: linear, linear;
+  transition-timing-function: linear, linear;
+  -webkit-overflow-scrolling: touch;
 }
 
 article {
@@ -27,6 +39,9 @@ article {
   padding: 0;
   position: relative;
   animation: fadein 1s;
+  overflow: hidden;
+  -webkit-transform: translate3d(0px,0px,0px);
+
 }
 
 
@@ -45,7 +60,7 @@ article img {
   width: 100%;
   height: auto;
   margin-bottom: -4px;
-  border:1px solid #AAA;
+  /*border:1px solid #AAA;*/
   -webkit-user-drag: none;
 }
 
@@ -61,10 +76,107 @@ article .title .category {
   z-index: 2;
   position: relative;
 }
+
+.like_icon{
+  position: absolute !important;
+  width: 38px !important;
+  height: 36px !important;
+  right: 0px !important;
+  display: block !important;
+  background: url(../img/like.png) no-repeat;
+  z-index:200;
+  opacity: 0.5;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.liked {
+  opacity: 1!important;
+  background: url(../img/like.ok.png) no-repeat;
+}
+
+.infos{
+  height: 52px;
+}
+
+.prix{
+  background: #212436;
+  display: block;
+  width: 25%;
+  float: left;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  line-height: 51px;
+}
+
+.taille{
+  background: #fff;
+  height: 51px;
+  display: block;
+  width: 25%;
+  float: left;
+  color: #212436;
+  font-size: 15px;
+  text-align: center;
+  line-height: 51px;
+  border-right: 2px solid #d4d4d4;
+}
+.pseudo{
+  background: #fff;
+  height: 51px;
+  display: block;
+  width: 50%;
+  float: left;
+  color: #212436;
+  font-size: 15px;
+  text-align: center;
+  line-height: 51px;
+}
+ .swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > figure {
+  float:left;
+  width:100%;
+  position: relative;
+}
+
 #loader-article{
   position: absolute;
   bottom: 0;
   height: 30px;
   width: 100%;
+  z-index: 20;
   background: #FFF url('../img/load.gif') no-repeat center center;
 }
+
+.contact{
+  width: 100%;
+  background: #fff;
+  margin: 0px auto;
+  padding:20px;
+  z-index: 10;
+  visibility: hidden;
+}
+
+.top{
+    position: absolute;
+    top: 0;
+}
+
+.bottom{
+    position: absolute;
+    bottom: 0;
+}
+
+

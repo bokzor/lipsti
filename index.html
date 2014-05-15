@@ -12,8 +12,10 @@
 <link href="css/login.css" rel="stylesheet">
 <link href="css/infinite.css" rel="stylesheet">
 <link href="css/addArticle.css" rel="stylesheet">
-<link href="css/tablette.css" rel="stylesheet">
 <link href="css/libs/crop.css" rel="stylesheet">
+<link href="css/libs/animations.css" rel="stylesheet">
+
+<link href="css/tablette.css" rel="stylesheet">
 
 </head>
 <body>
@@ -24,22 +26,47 @@
 </div>
 
 <!-- # panel -->
-<script type="text/javascript" src="js/mobile/libs/head.js"></script>
-<script type="text/javascript" src="js/mobile/includes.js"></script>
+<script type="text/javascript" src="js/libs/head.js"></script>
+<script type="text/javascript" src="js/includes.js"></script>
 
 <!-- template to display the list of the articles -->
 <script type="text/template" id="infiniteArticle">
 <ul>
 <%  articles.each(function (article) {  %>
 <li>
-<article class="format-standard">
+<article id="article-<%= article.get('id') %>" class="format-standard">
     <div class="wrapped-content">
-        <p class="title"><span class="category"><%= article.get('category') %></span> <span class="time"><%= article.get('date') %></span></p>
-        <h2><a href="blog-single-standard.html"><%= article.get('name') %></a></h2>
+        <p class="title"><span class="category"><%= article.get('categorie') %></span> <span class="time"><%= article.get('city') %></span></p>
+        <h2><a href="#"><%= article.get('libelle') %></a></h2>
         </div>
-        <figure>
-        <img  src="<%= article.get('imageUrl') %>" alt="">
-        </figure>
+        <div id="slider-<%= article.get('id') %>" data-snap-ignore="true" class="">
+            <div class='swipe-wrap'>
+                <figure data-id="<%= article.get('id') %>" class="activateSlider">
+                    <a href="#" data-id="<%= article.get('id') %>" class="like_icon <% if(article.get('liked') == true) { %> liked <% } %>"></a>
+                    <img src="<%= app.config.url + '/upload/' + article.get('image') %>" alt="">
+                </figure>
+                <% if(article.get('image2') != '') { %>
+                <figure style="display:none;">
+                    <img  data-src="<%= app.config.url + '/upload/' + article.get('image2') %>" alt="">
+                </figure>
+                <% } %>
+                <% if(article.get('image3') != '') { %>
+                <figure style="display:none;">
+                    <img data-src="<%= app.config.url + '/upload/' + article.get('image3') %>" alt="">
+                </figure>
+                <% } %>
+                <% if(article.get('image4') != '') { %>
+                <figure style="display:none;">
+                    <img  data-src="<%= app.config.url + '/upload/' + article.get('image4') %>" alt="">
+                </figure>
+                <% } %>
+            </div>
+        </div>
+        <div class="infos">
+            <div class="prix"><%= article.get('prix') %>€</div>
+            <div class="taille"><% if(article.get('size') == "Ne s'applique pas "){ %> Na <% } else { %> <%= article.get('size') %> <% } %> </div>
+            <div class="pseudo"><%= article.get('ownerSlug') %></div>
+        </div>
 </article>
 </li>
 <% }); %>
@@ -59,11 +86,33 @@
 </script>
 <!-- end template -->
 
+<!-- template to display the contact Form -->
+<script type="text/template" id="contactOption">
+    <div class="slideUp contact bottom">
+        <input type="submit" id="displayForm" value="Prendre contact" />
+        <input type="submit" id="annulerOption" class="facebook-connect" value="Annuler" />
+    </div>
+</script>
+
+<script type="text/template" id="contactForm">
+    <div class="slideUp contact top">
+        <textarea id="message" name="message" placeholder="Votre message..."></textarea>
+    </div>
+    <div class="slideUp contact bottom">
+        <input type="submit" id="send-message" value="Envoyer" />
+        <input type="submit" id="annulerOption" class="facebook-connect" value="Annuler" />
+    </div>
+</script>
+<!-- end template -->
+
+
 <!-- template for the menu -->
 <script type="text/template" id="menuTemplate">
 <ul class="list">
     <li><a class="icon icon-home" id="accueil">Accueil </a></li>
+    <% if(logged != false) { %> 
     <li><a class="icon icon-plus" id="add-article">Ajouter un article </a></li>
+    <% } %>  
     <li class="icon list-divider"></li>
     <% if(logged == false) { %> 
     <li><a class="icon icon-enter" id="login">Se connecter</a></li>
@@ -73,6 +122,72 @@
 </ul>
 </script>
 <!-- end template -->
+
+
+<!-- template for the menu -->
+<script type="text/template" id="filtreTemplate">
+<ul class="list">
+    <li>
+        <span class="custom-dropdown big">
+            <select id="catSelect" name="catInput">    
+                <option value="0">Type</option>
+                <% cats.forEach(function(cat){ %>
+                    <option value="<%= cat.get('id') %>"><%= cat.get('value') %></option>
+                <% }) %>   
+            </select>
+        </span>
+    </li>
+    <li>
+        <span class="custom-dropdown big">
+            <select id="genreSelect" name="genreInput">    
+                <option value="0">Pour</option>
+                <option value="1">Femmes</option>
+                <option value="2">Hommes</option>  
+            </select>
+        </span>
+    </li>
+    <li>
+        <span class="custom-dropdown big">
+            <select id="sizeSelect" name="sizeInput">    
+                <option value="0">Taille</option>
+                <% sizes.forEach(function(size){ %>
+                    <option value="<%= size.get('id') %>"><%= size.get('value') %></option>
+                <% }) %>   
+            </select>
+        </span>
+    </li>
+    <li>
+        <span class="custom-dropdown big">
+            <select id="prixSelect" name="sizeInput">    
+                <option value="0">Budget</option>
+                <option value="1">20€</option>
+                <option value="2">50€</option> 
+                <option value="3">100€</option>  
+                <option value="4">+100€</option>  
+            </select>
+        </span>
+    </li>
+    <li>
+        <span class="custom-dropdown big">
+            <select id="regionSelect" name="sizeInput">    
+                <option value="0">Region</option>
+                <% regions.forEach(function(region){ %>
+                    <option value="<%= region.get('id') %>"><%= region.get('value') %></option>
+                <% }) %>   
+            </select>
+        </span>
+    </li>
+    <li>
+        <span class=" big">
+            <input type='submit' id="filter" value='Filtrer' />
+        </span>
+    </li>
+
+</ul>
+</script>
+<!-- end template -->
+
+
 
 <!-- template profile image -->
 <script type="text/template" id="profileTemplate">
@@ -86,83 +201,85 @@
 
 <!-- template add article -->
 <script type="text/template" id="addArticleTemplate">
-<% console.log(cat, size) %>
 <div class="container-add-article">
     <div class="row">
-        <input id="marque" type="text" placeholder="Marque" value="" />
+        <input id="mark" name="mark" type="text" placeholder="Marque" value="" />
     </div>
     <div class="row">
         <div class="pad-right col-xm-6 col-xs-6">
-            <input id="marque" type="text" placeholder="Prix" value="" />
+            <input id="price" name="price" type="text" placeholder="Prix" value="" />
         </div>
         <div id="prefetch-city" class="col-xm-6 col-xs-6">
-            <input id="city" type="text" placeholder="Code Postal" value="" />
-            <input type="hidden" id="cpInput" name="cpInput" />
+            <input id="cpInput" type="text" placeholder="Code Postal" value="" />
         </div>
     </div>
     <div class="row">
-        <textarea name="description" placeholder="Description de l'article"></textarea>
+        <textarea id="description" name="description" placeholder="Description de l'article"></textarea>
     </div>
     <div class="container-add-photos">
         <div class="row">
             <div class="pad-right col-xm-6 col-xs-6">
                 <button class="button addPhoto" id="b-photo-1" data-photo-id="1">Photo 1</button>
-                <input type="hidden" id="photo-1" name="photo-1" />
+                <input type="hidden" id="file1input" name="file1input" />
             </div>
             <div class="col-xm-6 col-xs-6">
                 <button class="button addPhoto" id="b-photo-2" data-photo-id="2">Photo 2</button>
-                <input type="hidden" id="photo-2" name="photo-2" />
+                <input type="hidden" id="file2input" name="file2input" />
             </div>
         </div>
         <div class="row">
             <div class="pad-right col-xm-6 col-xs-6">
                 <button class="button addPhoto" id="b-photo-3" data-photo-id="3">Photo 3</button>
-                <input type="hidden" id="photo-3" name="photo-3" />
+                <input type="hidden" id="file3input" name="file3input" />
             </div>
             <div class="col-xm-6 col-xs-6">
                 <button class="button addPhoto" id="b-photo-4" data-photo-id="4" >Photo 4</button>
-                <input type="hidden" id="photo-4" name="photo-4" />
+                <input type="hidden" id="file4input" name="file4input" />
             </div>
         </div>
     </div>
     <div class="row">
         <div class="pad-right col-xm-4 col-xs-4">
             <span class="custom-dropdown big">
-                <select>    
+                <select id="catInput" name="catInput">    
                     <option>Type</option>
-                    <option>The Great Gatsby</option>  
+                    <% cats.forEach(function(cat){ %>
+                        <option value="<%= cat.get('id') %>"><%= cat.get('value') %></option>
+                    <% }) %>   
                 </select>
             </span>
         </div>
         <div class="pad-right col-xm-4 col-xs-4">
             <span class="custom-dropdown big">
-                <select>    
+                <select id="genreInput" name="genreInput">    
                     <option>Pour</option>
-                    <option>Femmes</option>
-                    <option>Hommes</option>  
+                    <option value="1">Femmes</option>
+                    <option value="2">Hommes</option>  
                 </select>
             </span>
         </div>
         <div class="col-xm-4 col-xs-4">
             <span class="custom-dropdown big">
-                <select>    
+                <select id="sizeInput" name="sizeInput">    
                     <option>Taille</option>
-                    <option>The Great Gatsby</option>  
+                    <% sizes.forEach(function(size){ %>
+                        <option value="<%= size.get('id') %>"><%= size.get('value') %></option>
+                    <% }) %>   
                 </select>
             </span>
         </div>
     </div>
     <div class="row">
-        <input id="tags" type="text" placeholder="Tags" class="tags" value="" />
+        <input id="tags" name="tags" type="text" placeholder="Tags" class="tags" value="" />
     </div>
     <div class="row">
         <input id='check-1' type="checkbox" name='check-1' checked='checked' />
-        <label for="check-1">J'accepte les conditions générales</label>
-        <input id='check-2' type="checkbox" name='check-1' />
-        <label for="check-2">Partager sur Facebook</label>        
+        <label for="check-1"><a href="http://lipsti.com/misc/cg.pdf">J'accepte les conditions générales</a></label>
+        <input id='share' type="checkbox" name='share' />
+        <label for="share">Partager sur Facebook</label>        
     </div>
     <div class="row">
-        <input type="submit" id="valider-login" value="Se connecter">
+        <input type="submit" id="valider-article" value="Valider">
     </div>
 </div>
 </script>
@@ -170,13 +287,14 @@
 
 <!-- template for image cropping -->
 <script type="text/template" id="cropImage">
+    <div class="cropDefault">
     <div class="cropMain"></div>
     <div class="cropSlider"></div>
     <input type="submit" id="validerCrop" style="margin-bottom: 15px;" value="Valider">
     <input type="submit" id="annulerCrop" class="button-annuler" value="Annuler">
+    </div>
 </script>
 <!-- end template image cropping -->
-<script src="http://192.168.1.12:8080/target/target-script-min.js#anonymous"></script>
 
 </body>
 </html>

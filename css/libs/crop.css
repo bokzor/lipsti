@@ -9,23 +9,22 @@
 /*  the class .one must match the class written into one.init('.one');
 /*
 /*---------------------------------------------------------*/
- #cropDefault {
+.cropDefault .cropMain {
+    width:360px;
+    height:370px;
+}
+
+#cropContainer{
     width: 100%;
     height: 100%;
+    background: rgba(78, 158, 173, 1);
     position: absolute;
-    background: rgba(78, 158, 173, 0.7);
     top: 0;
-    z-index: 100;
-    text-align: center;
-    width:360px;
-    height:370px;
+    z-index: 20;
 }
-.cropMain {
-    width:360px;
-    height:370px;
-    margin-left:auto;
-    margin-right:auto;
-}
+
+
+
 /*---------------------------------------------------------*/
 
 /*  cropper styling begins here...
@@ -34,9 +33,12 @@
     background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAAHnlligAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHJJREFUeNpi+P///5EjRxiAGMgCCCAGFB5AADGCRBgYjh49CiRZIJS1tTWQBAggFBkmBiSAogxFBiCAoHogAKIKAlBUYTELAiAmEtABEECk20G6BOmuIl0CIMBQ/IEMkO0myiSSraaaBhZcbkUOs0HuBwARxT7aD6kRXAAAAABJRU5ErkJggg==') repeat;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
     box-shadow:inset 0 0 6px rgba(0, 0, 0, 0.5);
+    margin-left:auto;
+    margin-right:auto;
 }
 .cropMain .crop-img {
-    position: absolute
+    position: absolute;
+    max-width: none;
 }
 .cropMain .crop-container {
     overflow: hidden;
